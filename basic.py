@@ -71,16 +71,16 @@ num_cols = 3
 num_images = num_rows*num_cols
 plt.figure(figsize=(2*2*num_cols, 2*num_rows))
 
-#for i in range(100):
-#    img_to_test = test_images[i]
-#    img = (np.expand_dims(img_to_test,0))
-#    predictions_single = model.predict(img)
-#    print(predictions_single)
-#    plot_value_array(0, predictions_single, test_labels)
-#    plt.xticks(range(10), class_names, rotation=45)
-#    plt.show()
-#    plt.figure()
-#    plt.imshow(img_to_test)
-#    plt.colorbar()
-#    plt.grid(False)
-#    plt.show()
+for i in range(100):
+    img_to_test = test_images[i]
+    img = (np.expand_dims(img_to_test,0))
+    predictions_single = model.predict(img)
+    print(predictions_single)
+    plot_value_array(0, predictions_single, test_labels)
+    plt.xticks(range(10), class_names, rotation=45)
+    plt.show()
+    plt.figure()
+    plt.imshow(img_to_test)
+    plt.colorbar()
+    plt.grid(False)
+    plt.show()
