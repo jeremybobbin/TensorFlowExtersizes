@@ -1,0 +1,9 @@
+#!/bin/sh
+last_segment="$(ls -t | head -n 1 | sed 's/.py//g')" &&
+	url="$(grep $last_segment URLs)" || {
+		echo "Dang" >&2;
+		echo "Last opened: '$last_segment'" >&2;
+		exit 1;
+	}
+
+$BROWSER $url &> /dev/null &
