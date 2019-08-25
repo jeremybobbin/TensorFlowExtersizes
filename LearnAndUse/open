@@ -7,3 +7,4 @@ last_segment="$(ls -t | head -n 1 | sed 's/.py//g')" &&
 	}
 
 $BROWSER $url &> /dev/null &
+nvim "$last_segment.py"
