@@ -32,8 +32,8 @@ train_data = multi_hot_sequences(train_data, dimension=NUM_WORDS)
 test_data = multi_hot_sequences(test_data, dimension=NUM_WORDS)
 
 baseline_model = keras.Sequential([
-    keras.layers.Dense(16, activation=tf.nn.relu, input_shape=(NUM_WORDS,)),
-    keras.layers.Dense(16, activation=tf.nn.relu),
+    keras.layers.Dense(4, activation=tf.nn.relu, input_shape=(NUM_WORDS,)),
+    keras.layers.Dense(4, activation=tf.nn.relu),
     keras.layers.Dense(1, activation=tf.nn.sigmoid)
 ])
 
