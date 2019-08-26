@@ -56,6 +56,7 @@ def plot_history(histories, key='binary_crossentropy'):
   plt.legend()
 
   plt.xlim([0,max(history.epoch)])
+  view_plot(plt)
 
 
 NUM_WORDS = 10000
@@ -67,12 +68,31 @@ train_data = multi_hot_sequences(train_data, dimension=NUM_WORDS)
 test_data = multi_hot_sequences(test_data, dimension=NUM_WORDS)
 
 (base_model, base_hist) = sized_model(16, train_data, train_labels, test_data, test_labels);
-(small_model, small_hist) = sized_model(4, train_data, train_labels, test_data, test_labels);
-(big_model, big_hist) = sized_model(512, train_data, train_labels, test_data, test_labels);
+
+dpt_model = keras.models.Sequential([
+    keras.layers.Dense(16, activation=tf.nn.relu, input_shape=(NUM_WORDS,)),
+     keras.layers.Dense(16, kernel_regularizer=keras.regularizers.l2(0.001),
+                       activation=tf.nn.relu, input_shape=(NUM_WORDS,)),
+    keras.layers.Dense(16, kernel_regularizer=keras.regularizers.l2(0.001),
+                       activation=tf.nn.relu),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(16, activation=tf.nn.relu),
+    keras.layers.Dropout(0.5),
+    keras.layers.Dense(1, activation=tf.nn.sigmoid)
+])
+
+dpt_model.compile(optimizer='adam',
+                  loss='binary_crossentropy',
+                  metrics=['accuracy','binary_crossentropy'])
+
+dpt_hist = dpt_model.fit(train_data, train_labels,
+                                  epochs=20,
+                                  batch_size=512,
+                                  validation_data=(test_data, test_labels),
+                                  verbose=2)
 
 
 
 
 plot_history([('baseline', base_hist),
-              ('smaller', small_hist),
-              ('bigger', big_hist)])
+              ('dropout', dpt_hist)])
