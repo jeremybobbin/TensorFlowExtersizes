@@ -55,16 +55,41 @@ train_df.head()
 ds = easy_input_function(train_df, label_key='income_bracket', num_epochs=5, shuffle=True, batch_size=10)
 
 # categorical | continuous
-for feature_batch, label_batch in ds.take(1):
-  print('Feature keys:', list(feature_batch.keys())[:5])
-  print()
-  print('Age batch   :', feature_batch['age'])
-  print()
-  print('Label batch :', label_batch )
-
-
 train_inpf = functools.partial(census_dataset.input_fn, train_file, num_epochs=2, shuffle=True, batch_size=64)
 test_inpf = functools.partial(census_dataset.input_fn, test_file, num_epochs=1, shuffle=False, batch_size=64)
 
 age = fc.numeric_column('age')
-# left off at: https://www.tensorflow.org/tutorials/estimators/linear#base_feature_columns
+classifier = tf.estimator.LinearClassifier(feature_columns=[age])
+classifier.train(train_inpf)
+result = classifier.evaluate(test_inpf)
+
+clear_output()
+# accuracy
+#	Percentage of correct number of classifications
+#
+# accuracy_baseline
+#	Accuracy baseline based on labels mean. This is the best the model could do by always predicting one class.
+#
+# AUC or Area Under the (ROC) Curve
+#	tells you something about the true/false positive rate.
+#	In short the AUC is equal to the probability that a classifier will rank a randomly chosen positive instance higher than a randomly chosen negative one.
+#       
+#       https://www.tensorflow.org/api_docs/python/tf/metrics/auc
+#	https://developers.google.com/machine-learning/crash-course/classification/roc-and-auc
+#	https://developers.google.com/machine-learning/crash-course/classification/true-false-positive-negative
+#   
+# auc_precision_recall
+# 	Is the percentage of relevant intstances, among the retrieved instances, that have been retrieved over the total amount of relevant instances.
+#
+# average_loss
+# 	You're usually minimizing some function, and this is likely the average value of that function given the current batches.
+#
+# loss
+# 	The current value of the loss (as above). Either the sum of the losses, or the loss of the last batch.
+#
+# global_step
+# 	Number of iterations.
+#
+# label/mean and prediction/mean
+
+print(result)
